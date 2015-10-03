@@ -1,4 +1,4 @@
-package com.vivek.model;
+package com.vivek.Model;
 import org.springframework.stereotype.Repository;
 
 @Repository

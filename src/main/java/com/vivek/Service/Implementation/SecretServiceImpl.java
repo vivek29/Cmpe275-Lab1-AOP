@@ -4,8 +4,8 @@ import java.util.UUID;
 import org.springframework.stereotype.Component;
 
 import com.vivek.SecretMain;
+import com.vivek.Model.Secret;
 import com.vivek.Service.SecretService;
-import com.vivek.model.Secret;
 
 @Component
 public class SecretServiceImpl implements SecretService {
@@ -17,8 +17,8 @@ public class SecretServiceImpl implements SecretService {
 	 */
 	public UUID storeSecret(String userId, Secret secret) {
 
-		String key = userId+"#"+secret.getId();
-		SecretMain.personalSecrets.put(key,secret);
+		String key = userId+secret.getId();				// get the key
+		SecretMain.ownerSecrets.put(key,secret);
 		return secret.getId();
 	}
 
@@ -27,11 +27,11 @@ public class SecretServiceImpl implements SecretService {
 	 @param userid is the user who wants to read the secret
 	 @param secretUUIS is the id of the secret which is to be read
 	 */
-	public Secret readSecret(String userId, UUID secretUUID) {
+	public Secret readSecret(String userId, UUID uuid) {
 		
-		String key = userId+"#"+secretUUID;
-		if(SecretMain.personalSecrets.containsKey(key))
-			return SecretMain.personalSecrets.get(key);
+		String key = userId+uuid;						// get the key
+		if(SecretMain.ownerSecrets.containsKey(key))
+			return SecretMain.ownerSecrets.get(key);
 		else
 			return SecretMain.shareSecrets.get(key);		
 	}
@@ -42,12 +42,12 @@ public class SecretServiceImpl implements SecretService {
 	 @param UUID the secret key which is to be shared
 	 @param targetId is the user id with whom the UUID is shared
 	 */
-	public void shareSecret(String userId, UUID secretUUID, String targetId) {
+	public void shareSecret(String userId, UUID uuid, String targetId) {
 		
 		if(!userId.equals(targetId)){
-			String ownerKey = userId+"#"+secretUUID;
-			String key = targetId+"#"+secretUUID;
-			SecretMain.shareSecrets.put(key, SecretMain.personalSecrets.get(ownerKey));
+			String ownerKey = userId+uuid;				// get the owner key
+			String key = targetId+uuid;					// get the key
+			SecretMain.shareSecrets.put(key, SecretMain.ownerSecrets.get(ownerKey));
 		}
 		
 	}
@@ -58,13 +58,13 @@ public class SecretServiceImpl implements SecretService {
 	 @param UUID the secret key which is to be unshared
 	 @param targetId is the user id with whom the UUID is unshared
 	 */
-	public void unshareSecret(String userId, UUID secretUUID, String targetId) {
+	public void unshareSecret(String userId, UUID uuid, String targetId) {
 		
 		if(!userId.equals(targetId)){
-			String ownerKey = userId+"#"+secretUUID;
-			if(SecretMain.personalSecrets.containsKey(ownerKey))
+			String ownerKey = userId+uuid;				// get the owner key
+			if(SecretMain.ownerSecrets.containsKey(ownerKey))
 			{
-				String key = targetId+"#"+secretUUID; 
+				String key = targetId+uuid;				// get the key
 				SecretMain.shareSecrets.remove(key);
 			}
 		}

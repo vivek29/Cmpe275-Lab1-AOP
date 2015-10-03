@@ -1,4 +1,4 @@
-package com.vivek.model;
+package com.vivek.Model;
 import java.util.UUID;
 import org.springframework.stereotype.Repository;
 

@@ -5,18 +5,18 @@ import java.util.HashMap;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.vivek.Model.Secret;
 import com.vivek.Service.SecretService;
-import com.vivek.model.Secret;
 
 
 public class SecretMain {
 	
-	public static HashMap<String, Secret> personalSecrets;
+	public static HashMap<String, Secret> ownerSecrets;
 	public static HashMap<String, Secret> shareSecrets;
 
 	public static void main(String[] args) {
 		
-		personalSecrets = new HashMap<String, Secret>();
+		ownerSecrets = new HashMap<String, Secret>();
 		shareSecrets = new HashMap<String, Secret>();
 		
 

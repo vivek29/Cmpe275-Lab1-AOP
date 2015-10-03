@@ -3,7 +3,7 @@ import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 
-import com.vivek.model.Secret;
+import com.vivek.Model.Secret;
 
 @Service
 public interface SecretService {
