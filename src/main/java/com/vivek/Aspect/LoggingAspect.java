@@ -165,7 +165,7 @@ public class LoggingAspect {
 			if(DBService.ownerSecrets.containsKey(key))
 				pjp.proceed();										// if authorized, than only proceed	
 			else if(!DBService.shareSecrets.containsKey(key))
-				throw new UnauthorizedException("Unauthorized Exception");
+				throw new Throwable();
 		}	
 	
 		catch(NullPointerException e){
