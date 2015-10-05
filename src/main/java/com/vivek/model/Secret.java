@@ -10,12 +10,34 @@ public class Secret {
 	private String message;
 	
 	/**
+	 Default Constructor
+	 */
+	public Secret(){
+		this.message = "This is default secret..";
+	}
+	
+	/**
+	 Constructor
+	 * @param message
+	 */
+	public Secret(String message){
+		this.message = message;
+	}
+	
+	/**
 	 * @return the id
 	 */
 	public UUID getId() {
 		return id;
 	}
-
+	
+	/**
+	 Generates the unique UUID
+	 */
+	public void generateUUID(){
+		this.id = UUID.randomUUID();
+	}
+	
 	/**
 	 * @return the message
 	 */
@@ -30,13 +52,5 @@ public class Secret {
 		this.message = message;
 	}
 
-	/**
-	 * 
-	 * @param message
-	 */
-	public Secret(String message){
-		this.message = message;
-		this.id = UUID.randomUUID();
-	}
 	
 }

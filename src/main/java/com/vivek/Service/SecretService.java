@@ -1,10 +1,12 @@
 package com.vivek.Service;
 import java.util.UUID;
-
 import org.springframework.stereotype.Service;
-
 import com.vivek.Model.Secret;
 
+/**
+ * @author Vivek
+   SecretService Interface
+ */
 @Service
 public interface SecretService {
 
