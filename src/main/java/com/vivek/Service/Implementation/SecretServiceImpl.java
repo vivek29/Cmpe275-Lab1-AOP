@@ -49,7 +49,7 @@ public class SecretServiceImpl implements SecretService {
 	public void shareSecret(String userId, UUID secretId, String targetUserId) {
 		
 		String ownerKey = userId+"&"+secretId;				// get the owner key
-		String key = targetUserId+secretId;					// get the key
+		String key = targetUserId+"&"+secretId;					// get the key
 		DBService.shareSecrets.put(key, DBService.ownerSecrets.get(ownerKey));
 	}
 
