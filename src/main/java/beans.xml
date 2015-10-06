@@ -14,10 +14,6 @@
 
 	<context:component-scan base-package="com.vivek" />
 		
-	<bean id="secret" class="com.vivek.Model.Secret" scope="prototype">
-		<constructor-arg name="message" value="CMPE 275 Lab1 Assignment" />
-	</bean>
-	
 	<bean id="dBService" class="com.vivek.Service.DBService" />	
 
 </beans>

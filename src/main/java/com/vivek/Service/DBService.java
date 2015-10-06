@@ -1,12 +1,15 @@
 package com.vivek.Service;
 import java.util.HashMap;
+
+import org.springframework.stereotype.Service;
+
 import com.vivek.Model.Secret;
 
 /**
  * @author Vivek
  The data service, HashMaps used.
  */
-
+@Service
 public class DBService {
 	
 	public static HashMap<String, Secret> ownerSecrets;

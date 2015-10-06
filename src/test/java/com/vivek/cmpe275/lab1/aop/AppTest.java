@@ -1,11 +1,15 @@
 package com.vivek.cmpe275.lab1.aop;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.Assert;
+
 import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 import com.vivek.Exception.UnauthorizedException;
 import com.vivek.Model.Secret;
 import com.vivek.Service.DBService;
@@ -20,9 +24,21 @@ public class AppTest {
 	@Autowired
 	DBService dBService;
 	
-	ApplicationContext ctx = new ClassPathXmlApplicationContext("beans.xml");
-	SecretService secretService = (SecretService) ctx.getBean("secretServiceImpl");
+	ApplicationContext ctx;
+	SecretService secretService;
+	
+	/**
+	 * Initialize context
+	 * @throws Exception
+	 */
+	@Before
+	public void setUp() throws Exception{
 		
+		ctx = new ClassPathXmlApplicationContext("beans.xml");
+		secretService = (SecretService) ctx.getBean("secretServiceImpl");
+	}
+	
+	
     /** TestA
     Bob cannot read Alice’s secret, which has not been shared with Bob. 
     "Unauthorized Exception"
@@ -30,8 +46,7 @@ public class AppTest {
     @Test(expected=UnauthorizedException.class)
 	public void testA(){
 		System.out.println("testA");
-		Secret secret = (Secret) ctx.getBean("secret");
-		UUID secretId = secretService.storeSecret("Alice", secret);
+		UUID secretId = secretService.storeSecret("Alice", new Secret());
 		secretService.readSecret("Bob", secretId);
 	}
     
@@ -41,8 +56,7 @@ public class AppTest {
     @Test
     public void testB(){
 		System.out.println("testB");
-		Secret secret = (Secret) ctx.getBean("secret");
-		UUID secretId = secretService.storeSecret("Alice", secret);
+		UUID secretId = secretService.storeSecret("Alice", new Secret());
 		secretService.shareSecret("Alice", secretId, "Bob");
 		secretService.readSecret("Bob", secretId);
 	}
@@ -53,8 +67,7 @@ public class AppTest {
     @Test
 	public void testC(){
 		System.out.println("testC");
-		Secret secret = (Secret) ctx.getBean("secret");
-		UUID secretId = secretService.storeSecret("Alice", secret);
+		UUID secretId = secretService.storeSecret("Alice", new Secret());
 		secretService.shareSecret("Alice", secretId, "Bob");
 		secretService.shareSecret("Bob", secretId, "Carl");
 		secretService.readSecret("Carl", secretId);
@@ -66,10 +79,8 @@ public class AppTest {
     @Test(expected=UnauthorizedException.class)
 	public void testD(){
 		System.out.println("testD");
-		Secret secret_Alice = (Secret) ctx.getBean("secret");
-		UUID secretId_Alice = secretService.storeSecret("Alice", secret_Alice);
-		Secret secret_Carl = (Secret) ctx.getBean("secret");
-		UUID secretId_Carl = secretService.storeSecret("Carl", secret_Carl);
+		UUID secretId_Alice = secretService.storeSecret("Alice", new Secret());
+		UUID secretId_Carl = secretService.storeSecret("Carl", new Secret());
 		secretService.shareSecret("Alice", secretId_Alice, "Bob");
 		secretService.shareSecret("Bob", secretId_Carl, "Alice");
 	}
@@ -81,8 +92,7 @@ public class AppTest {
     @Test(expected=UnauthorizedException.class)
 	public void testE(){
 		System.out.println("testE");
-		Secret secret = (Secret) ctx.getBean("secret");
-		UUID secretId = secretService.storeSecret("Alice", secret);
+		UUID secretId = secretService.storeSecret("Alice", new Secret());
 		secretService.shareSecret("Alice", secretId, "Bob");
 		secretService.shareSecret("Bob", secretId, "Carl");
 		secretService.unshareSecret("Alice", secretId, "Carl");
@@ -96,8 +106,7 @@ public class AppTest {
     @Test(expected=UnauthorizedException.class)
 	public void testF(){
 		System.out.println("testF");
-		Secret secret = (Secret) ctx.getBean("secret");
-		UUID secretId = secretService.storeSecret("Alice", secret);
+		UUID secretId = secretService.storeSecret("Alice", new Secret());
 		secretService.shareSecret("Alice", secretId, "Bob");
 		secretService.shareSecret("Alice", secretId, "Carl");
 		secretService.shareSecret("Carl", secretId, "Bob");
@@ -112,8 +121,7 @@ public class AppTest {
     @Test
 	public void testG(){
 		System.out.println("testG");
-		Secret secret = (Secret) ctx.getBean("secret");
-		UUID secretId = secretService.storeSecret("Alice", secret);
+		UUID secretId = secretService.storeSecret("Alice", new Secret());
 		secretService.shareSecret("Alice", secretId, "Bob");
 		secretService.shareSecret("Bob", secretId, "Carl");
 		secretService.unshareSecret("Bob", secretId, "Carl");
@@ -126,8 +134,7 @@ public class AppTest {
     @Test(expected=UnauthorizedException.class)
 	public void testH(){
 		System.out.println("testH");
-		Secret secret = (Secret) ctx.getBean("secret");
-		UUID secretId = secretService.storeSecret("Alice", secret);
+		UUID secretId = secretService.storeSecret("Alice", new Secret());
 		secretService.shareSecret("Alice", secretId, "Bob");
 		secretService.unshareSecret("Carl", secretId, "Bob");
 	}
@@ -139,8 +146,7 @@ public class AppTest {
     @Test(expected=UnauthorizedException.class)
 	public void testI(){
 		System.out.println("testI");
-		Secret secret = (Secret) ctx.getBean("secret");
-		UUID secretId = secretService.storeSecret("Alice", secret);
+		UUID secretId = secretService.storeSecret("Alice", new Secret());
 		secretService.shareSecret("Alice", secretId, "Bob");
 		secretService.shareSecret("Bob", secretId, "Carl");
 		secretService.unshareSecret("Alice", secretId, "Bob");
@@ -153,9 +159,8 @@ public class AppTest {
     @Test
 	public void testJ(){
 		System.out.println("testJ");
-		Secret secret = (Secret) ctx.getBean("secret");
-		UUID secretId1 = secretService.storeSecret("Alice", secret);
-		UUID secretId2 = secretService.storeSecret("Alice", secret);
+		UUID secretId1 = secretService.storeSecret("Alice", new Secret());
+		UUID secretId2 = secretService.storeSecret("Alice", new Secret());
 		boolean isSame = (secretId1==secretId2);
 		Assert.assertEquals(false, isSame);
 	}
